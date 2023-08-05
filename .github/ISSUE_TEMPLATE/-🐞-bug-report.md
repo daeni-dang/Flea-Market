@@ -2,7 +2,7 @@
 name: " \U0001F41E Bug report"
 about: 버그 이슈를 작성합니다.
 title: BUG
-labels: ":bug: bug, :magic_wand: new featuret"
+labels: ":bug: bug"
 assignees: ''
 
 ---
