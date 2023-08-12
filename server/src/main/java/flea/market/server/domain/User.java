@@ -40,7 +40,6 @@ public class User {
     private Dongs dong;
 
     @Column(name = "restrict_num")
-    @ColumnDefault("0")
     private Integer restrictNum;
 
     @Column(name = "status")
@@ -59,6 +58,7 @@ public class User {
         this.email = email;
         this.dong = dong;
         this.status = true;
+        this.restrictNum = 0;
         this.createdAt = createdAt;
     }
 

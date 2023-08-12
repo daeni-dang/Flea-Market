@@ -14,10 +14,13 @@ public class UserRequestDto {
     private String nickName;
     private String phone;
     private String email;
-    private Dongs dong;
+    private String dong;
+    private String si;
+    private String gu;
+
 
     @Builder
-    public UserRequestDto(String id, String pwd, String userName, String nickName, String phone, String email, Dongs dong) {
+    public UserRequestDto(String id, String pwd, String userName, String nickName, String phone, String email, String dong, String si, String gu) {
         this.id = id;
         this.pwd = pwd;
         this.userName = userName;
@@ -25,5 +28,7 @@ public class UserRequestDto {
         this.phone = phone;
         this.email = email;
         this.dong = dong;
+        this.si = si;
+        this.gu = gu;
     }
 }

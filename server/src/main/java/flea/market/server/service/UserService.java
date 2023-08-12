@@ -1,8 +1,10 @@
 package flea.market.server.service;
 
 import flea.market.server.domain.User;
+import flea.market.server.domain.region.Dongs;
 import flea.market.server.dto.request.UserRequestDto;
 import flea.market.server.dto.response.UserResponseDto;
+import flea.market.server.repository.DongsRepository;
 import flea.market.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +18,10 @@ import java.sql.Timestamp;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
+    private final DongsRepository dongsRepository;
     @Transactional
     public User createUser(UserRequestDto userDTO) {
+        Dongs dong = dongsRepository.findDongBySiGuDong(userDTO.getSi(), userDTO.getGu(), userDTO.getDong()).orElseThrow(() -> new RuntimeException("동 없어용"));
         Timestamp createdAt = new Timestamp(System.currentTimeMillis());
         User newUser = User.builder()
                 .id(userDTO.getId())
@@ -27,7 +30,7 @@ public class UserService {
                 .nickName(userDTO.getNickName())
                 .phone(userDTO.getPhone())
                 .email(userDTO.getEmail())
-                .dong(userDTO.getDong())
+                .dong(dong)
                 .createdAt(createdAt)
                 .build();
 

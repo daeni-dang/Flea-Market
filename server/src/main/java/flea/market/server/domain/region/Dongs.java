@@ -22,5 +22,4 @@ public class Dongs {
 
     @Column(name = "dong", nullable = false, length = 100)
     private String dong;
-
 }
