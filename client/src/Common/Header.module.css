@@ -1,0 +1,29 @@
+#header-bar {
+    /* header 높이 */
+    height: 110px;
+
+    /* header 아래 테두리 */
+    border-bottom: solid 1px #868e96;
+
+    /* 자식 요소 수직 정렬 */
+    display: flex;
+    align-items: center;
+}
+
+#title {
+    font-size: 60px;
+    margin-left: 15px;
+}
+
+#login-button-wrapper {
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+#login-button {
+    height: 30px;
+}
+
+.form-wrapper {
+    width: 100px;
+}
