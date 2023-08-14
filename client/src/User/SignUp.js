@@ -145,9 +145,7 @@ function SignUp() {
                 nickName: data.nickName,
                 phone: phone,
                 email: data.email,
-                si: si,
-                gu: gu,
-                dong: dong,
+                dongId: dong,
                 pwd: data.password,
             })
             navigate("/main");
@@ -227,7 +225,7 @@ function SignUp() {
                                 <option>시구</option>
                                 {
                                     siList.map((item, index) =>
-                                        <option key={index} value={item.id}>{item.si}</option>
+                                        <option key={index} value={item.id}>{item.name}</option>
                                     )
                                 }
                             </select>
