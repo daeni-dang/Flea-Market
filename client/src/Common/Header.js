@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import styles from './Header.module.css';
 
 function Header() {
@@ -8,9 +10,11 @@ function Header() {
                     @_@
                 </div>
                 <div id={styles["login-button-wrapper"]}>
-                    <button className="btn btn-dark" type="submit">
-                        로그인
-                    </button>
+                    <Link to="/login">
+                        <button className="btn btn-dark" type="submit">
+                            로그인
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

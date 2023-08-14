@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 
@@ -10,18 +11,32 @@ import * as yup from "yup";
 
 function SignUp() {
     const [phone, setPhone] = useState("");
-    const [si, setSi] = useState("");
-    const [gu, setGu] = useState("");
-    const [dong, setDong] = useState("");
-    let siList = [];
-    let guList = [];
-    let dongList = [];
+    const [si, setSi] = useState(0);
+    const [gu, setGu] = useState(0);
+    const [dong, setDong] = useState(0);
+    const [siList, setSiList] = useState([]);
+    const [guList, setGuList] = useState([]);
+    const [dongList, setDongList] = useState([]);
     const phoneRef = useRef();
+    const navigate = useNavigate();
 
+    // 맨 처음에 siList 불러옴
     useEffect(() => {
         getSi();
-    })
+    }, [])
 
+    // 비동기 처리를 위한 코드. useState는 비동기라 바로 값이 변경이 안됨.
+    useEffect(() => {
+        setSi(si);
+        getGu();
+    }, [si]);
+
+    useEffect(() => {
+        setGu(gu);
+        getDong();
+    }, [gu]);
+
+    // 폼 입력값의 스키마 및 범위 지정
     const formSchema = yup.object({
         id: yup
             .string()
@@ -62,10 +77,42 @@ function SignUp() {
     });
 
     const handleSi = (e) => {
-        console.log(e.target.value);
         setSi(e.target.value);
     }
 
+    const handleGu = (e) => {
+        setGu(e.target.value);
+    }
+
+    const handleDong = (e) => {
+        setDong(e.target.value);
+    }
+
+    const getSi = async () => {
+        let url = process.env.REACT_APP_SERVER_URL + "/region/si";
+        await axios.get(url)
+            .then(async function (response) {
+                setSiList(response.data);
+            })
+    }
+
+    const getGu = () => {
+        let url = process.env.REACT_APP_SERVER_URL + "/region/gu/" + si;
+        axios.get(url)
+            .then(function (response) {
+                setGuList(response.data);
+            })
+    }
+
+    const getDong = () => {
+        let url = process.env.REACT_APP_SERVER_URL + "/region/dong/" + gu;
+        axios.get(url)
+            .then(function (response) {
+                setDongList(response.data);
+            })
+    }
+
+    // 휴대전화번호 입력 시 "-" 자동 생성
     const handlePhone = (e) => {
         const value = phoneRef.current.value.replace(/\D+/g, "");
         const numberLength = 11;
@@ -90,50 +137,28 @@ function SignUp() {
     }
 
     const onSubmit = (data) => {
-        console.log(data);
-        let url = process.env.REACT_APP_SERVER_URL + "/signup";
-        axios.post(url, {
-            id: data.id,
-            userName: data.userName,
-            nickName: data.nickName,
-            phone: phone,
-            email: data.email,
-            region: dong,
-            pwd: data.password,
-        })
-    }
-
-    const getSi = () => {
-        console.log("get-si");
-        let url = process.env.REACT_APP_SERVER_URL + "/si";
-        axios.get(url)
-            .then(function (response) {
-                siList = response.data;
-                console.log(siList);
+        let url = process.env.REACT_APP_SERVER_URL + "/user/signup";
+        if (window.confirm("회원가입을 완료하시겠습니까?")) {
+            axios.post(url, {
+                id: data.id,
+                userName: data.userName,
+                nickName: data.nickName,
+                phone: phone,
+                email: data.email,
+                si: si,
+                gu: gu,
+                dong: dong,
+                pwd: data.password,
             })
-    }
-
-    const getGu = () => {
-        let url = process.env.REACT_APP_SERVER_URL + "/gu/" + si;
-        axios.get(url)
-            .then(function (response) {
-                console.log(response);
-            })
-    }
-
-    const getDong = () => {
-        let url = process.env.REACT_APP_SERVER_URL + "/dong/" + gu;
-        axios.get(url)
-            .then(function (response) {
-                console.log(response);
-            })
+            navigate("/main");
+        }
     }
 
     return(
         <div>
             <Header />
             <div id={styles["outer"]}>
-                <form onSubmit={handleSubmit} className={styles["form-wrapper"]}>
+                <form className={styles["form-wrapper"]}>
                     <div className={styles["input-box"]}>
                         <div className="input-group">
                             <span className={styles["input-header"]}>ID</span>
@@ -194,29 +219,33 @@ function SignUp() {
                     <div className={styles["confirm-text"]}>
                         {errors.email && <p>{errors.email.message}</p> }
                     </div><p></p>
-
                     {/* 주소 select로 변경 필요*/}
                     <div className={styles["input-box"]}>
                         <div className="input-group">
                             <span className={styles["input-header"]}>주소</span>
                             <select onChange={handleSi} className="form-select">
-                                <option default value="서울시">시도</option>
-                                {siList.map((name, index) => {
-                                    {console.log(name);}
-                                    return (
-                                        <option value={name}>{name}</option>
-                                    );
-                                })}
+                                <option>시구</option>
+                                {
+                                    siList.map((item, index) =>
+                                        <option key={index} value={item.id}>{item.si}</option>
+                                    )
+                                }
                             </select>
-                            <select className="form-select">
-                                <option default value="중구">시군구</option>
-                                <option value="중구">중구</option>
-                                {/*반복문으로 api에서 받은 리스트 쭉 보여줌*/}
+                            <select onChange={handleGu} className="form-select">
+                                <option>시군구</option>
+                                {
+                                    guList.map((item, index) =>
+                                        <option key={index} value={item.id}>{item.name}</option>
+                                    )
+                                }
                             </select>
-                            <select className="form-select">
-                                <option default value="오장동">읍면동</option>
-                                <option value="오장동">오장동</option>
-                                {/*반복문으로 api에서 받은 리스트 쭉 보여줌*/}
+                            <select onChange={handleDong} className="form-select">
+                                <option>읍면동</option>
+                                {
+                                    dongList.map((item, index) =>
+                                        <option key={index} value={item.id}>{item.name}</option>
+                                    )
+                                }
                             </select>
                         </div>
                     </div><p></p>
