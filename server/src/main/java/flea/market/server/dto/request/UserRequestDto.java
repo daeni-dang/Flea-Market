@@ -1,12 +1,10 @@
 package flea.market.server.dto.request;
 
-import flea.market.server.domain.region.Dongs;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class UserRequestDto {
     private String id;
     private String pwd;
@@ -18,17 +16,4 @@ public class UserRequestDto {
     private String si;
     private String gu;
 
-
-    @Builder
-    public UserRequestDto(String id, String pwd, String userName, String nickName, String phone, String email, String dong, String si, String gu) {
-        this.id = id;
-        this.pwd = pwd;
-        this.userName = userName;
-        this.nickName = nickName;
-        this.phone = phone;
-        this.email = email;
-        this.dong = dong;
-        this.si = si;
-        this.gu = gu;
-    }
 }
