@@ -10,8 +10,10 @@ import java.util.Optional;
 
 public interface DongsRepository extends JpaRepository<Dongs, Integer> {
 //  시, 구, 동의 이름으로 동 반환
-    @Query(value = "SELECT d FROM Dongs d WHERE d.gu.si.si = :siName AND d.gu.gu = :guName AND d.dong = :dongName")
-    Optional<Dongs> findDongBySiGuDong(@Param("siName") String siName, @Param("guName") String guName, @Param("dongName") String dongName);
+//    @Query(value = "SELECT d FROM Dongs d WHERE d.gu.si.si = :siName AND d.gu.gu = :guName AND d.dong = :dongName")
+//    Optional<Dongs> findDongBySiGuDong(@Param("siName") String siName, @Param("guName") String guName, @Param("dongName") String dongName);
 
     List<Dongs> findDongsByGu_Id(Integer guId);
+
+    Optional<Dongs> findById(Integer dongID);
 }

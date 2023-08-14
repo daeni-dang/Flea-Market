@@ -21,21 +21,21 @@ public class RegionController {
     private final RegionService regionService;
 
     @GetMapping("/si")
-    public ResponseEntity<List<Sis>> showSis() {
+    public ResponseEntity<List<RegionResponseDto>> showSiList() {
 
-        return ResponseEntity.ok(regionService.getSis());
+        return ResponseEntity.ok(regionService.readSiList());
     }
 
     @GetMapping("/gu/{siId}")
-    public ResponseEntity<List<RegionResponseDto>> showGus(@PathVariable Integer siId) {
+    public ResponseEntity<List<RegionResponseDto>> showGuList(@PathVariable Integer siId) {
 
-        return ResponseEntity.ok(regionService.getGus(siId));
+        return ResponseEntity.ok(regionService.readGuList(siId));
     }
 
     @GetMapping("/dong/{guId}")
-    public ResponseEntity<List<RegionResponseDto>> showDongs(@PathVariable Integer guId){
+    public ResponseEntity<List<RegionResponseDto>> showDongList(@PathVariable Integer guId){
 
-        return ResponseEntity.ok(regionService.getDongs(guId));
+        return ResponseEntity.ok(regionService.readDongList(guId));
     }
 
 }

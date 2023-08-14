@@ -19,7 +19,7 @@ public class UserService {
     private final DongsRepository dongsRepository;
     @Transactional
     public User createUser(UserRequestDto userDTO) {
-        Dongs dong = dongsRepository.findDongBySiGuDong(userDTO.getSi(), userDTO.getGu(), userDTO.getDong()).orElseThrow(() -> new RuntimeException("동 없어용"));
+        Dongs dong = dongsRepository.findById(userDTO.getDongId()).orElseThrow(() -> new RuntimeException("동 없어용"));
         Timestamp createdAt = new Timestamp(System.currentTimeMillis());
         User newUser = User.builder()
                 .id(userDTO.getId())

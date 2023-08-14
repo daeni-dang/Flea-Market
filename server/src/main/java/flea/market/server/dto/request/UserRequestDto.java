@@ -12,8 +12,6 @@ public class UserRequestDto {
     private String nickName;
     private String phone;
     private String email;
-    private String dong;
-    private String si;
-    private String gu;
+    private Integer dongId;
 
 }

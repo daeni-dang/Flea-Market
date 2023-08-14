@@ -22,11 +22,22 @@ public class RegionService {
     private final GusRepository gusRepository;
     private final DongsRepository dongsRepository;
 
-    public List<Sis> getSis() {
-        return sisRepository.findAll();
+    public List<RegionResponseDto> readSiList() {
+        List<Sis> tmpList = sisRepository.findAll();
+        List<RegionResponseDto> siResult = new ArrayList<>();
+
+        for (Sis gu : tmpList) {
+            RegionResponseDto regionResponseDto = RegionResponseDto.builder()
+                    .id(gu.getId())
+                    .name(gu.getSi())
+                    .build();
+            siResult.add(regionResponseDto);
+        }
+
+        return siResult;
     }
 
-    public List<RegionResponseDto> getGus(Integer siId) {
+    public List<RegionResponseDto> readGuList(Integer siId) {
 
         List<Gus> tmpList = gusRepository.findGuBySi_Id(siId);
         List<RegionResponseDto> guResult = new ArrayList<>();
@@ -42,7 +53,7 @@ public class RegionService {
         return guResult;
     }
 
-    public List<RegionResponseDto> getDongs(Integer guId) {
+    public List<RegionResponseDto> readDongList(Integer guId) {
         List<Dongs> tmpList = dongsRepository.findDongsByGu_Id(guId);
         List<RegionResponseDto> dongResult = new ArrayList<>();
 
