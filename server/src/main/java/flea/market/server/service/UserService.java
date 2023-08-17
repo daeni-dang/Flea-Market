@@ -2,7 +2,11 @@ package flea.market.server.service;
 
 import flea.market.server.domain.User;
 import flea.market.server.domain.region.Dongs;
+import flea.market.server.dto.request.LoginRequestDto;
 import flea.market.server.dto.request.UserRequestDto;
+import flea.market.server.dto.response.LoginResponseDto;
+import flea.market.server.exception.LoginFailureException;
+import flea.market.server.jwt.JwtTokenProvider;
 import flea.market.server.repository.region.DongsRepository;
 import flea.market.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +19,12 @@ import java.sql.Timestamp;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
     private final DongsRepository dongsRepository;
+    private final UserRepository repository;
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Transactional
     public User createUser(UserRequestDto userDTO) {
         Dongs dong = dongsRepository.findById(userDTO.getDongId()).orElseThrow(() -> new RuntimeException("동 없어용"));
@@ -43,4 +51,13 @@ public class UserService {
 
         return Boolean.TRUE;
     }
+
+    public LoginResponseDto loginUser(LoginRequestDto requestDto) {
+        User user = repository.findById(requestDto.getId()).orElseThrow(LoginFailureException::new);
+        if (!requestDto.getPwd().equals(user.getPwd())) {
+            throw new LoginFailureException();
+        }
+        return new LoginResponseDto(user.getId(), jwtTokenProvider.createToken(requestDto.getId()));
+    }
+
 }

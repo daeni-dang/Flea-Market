@@ -12,10 +12,10 @@ import java.sql.Timestamp;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "USER")
 @DynamicUpdate
 public class User {
+
     @Id
     @Column(name = "id", nullable = false, length = 50)
     private String id;
@@ -47,6 +47,9 @@ public class User {
 
     @Column(name = "created_at")
     private Timestamp createdAt;
+
+    protected User() {
+    }
 
     @Builder
     public User(String id, String pwd, String userName, String nickName, String phone, String email, Dongs dong, Timestamp createdAt) {

@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/flea_market?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     username: root
-    password: 0925
+    password: 1234
     hikari:
       pool-name: jpa-hikari-pool
       maximum-pool-size: 5
@@ -34,3 +34,8 @@ spring:
 
 server:
   port: 8080
+
+
+jwt:
+  secretKey:
+    youcantrevealthesecretkey1234012300040
