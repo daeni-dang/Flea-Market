@@ -4,7 +4,6 @@ import flea.market.server.domain.User;
 import flea.market.server.dto.request.LoginRequestDto;
 import flea.market.server.dto.request.UserRequestDto;
 import flea.market.server.dto.response.LoginResponseDto;
-import flea.market.server.exception.LoginFailureException;
 import flea.market.server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,11 +40,6 @@ public class UserController {
         map.put("id", responseDto.getId());
         map.put("token", responseDto.getToken());
         return ResponseEntity.ok(map);
-    }
-
-    @ExceptionHandler(LoginFailureException.class)
-    public void loginException(Exception e) {
-
     }
 
 }

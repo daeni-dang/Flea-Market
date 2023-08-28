@@ -4,7 +4,7 @@ import flea.market.server.domain.User;
 import flea.market.server.dto.request.LoginRequestDto;
 import flea.market.server.dto.request.UserRequestDto;
 import flea.market.server.dto.response.LoginResponseDto;
-import flea.market.server.exception.LoginFailureException;
+import flea.market.server.exception.exception.LoginFailureException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

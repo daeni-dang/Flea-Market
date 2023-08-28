@@ -5,7 +5,8 @@ import flea.market.server.domain.region.Dongs;
 import flea.market.server.dto.request.LoginRequestDto;
 import flea.market.server.dto.request.UserRequestDto;
 import flea.market.server.dto.response.LoginResponseDto;
-import flea.market.server.exception.LoginFailureException;
+import flea.market.server.exception.ErrorCode;
+import flea.market.server.exception.exception.LoginFailureException;
 import flea.market.server.jwt.JwtTokenProvider;
 import flea.market.server.repository.region.DongsRepository;
 import flea.market.server.repository.UserRepository;
@@ -53,9 +54,10 @@ public class UserService {
     }
 
     public LoginResponseDto loginUser(LoginRequestDto requestDto) {
-        User user = repository.findById(requestDto.getId()).orElseThrow(LoginFailureException::new);
+        User user = repository.findById(requestDto.getId())
+                .orElseThrow(() -> new LoginFailureException(ErrorCode.UNAUTHORIZED_MEMBER));
         if (!requestDto.getPwd().equals(user.getPwd())) {
-            throw new LoginFailureException();
+            throw new LoginFailureException(ErrorCode.UNAUTHORIZED_MEMBER);
         }
         return new LoginResponseDto(user.getId(), jwtTokenProvider.createToken(requestDto.getId()));
     }
